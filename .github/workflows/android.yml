@@ -4,7 +4,8 @@ name: Build Android APK
 on:
   push:
     branches: ["**"]
-    paths: ["android/**", "android-sources.tar.gz.b64", ".github/workflows/android.yml"]
+    tags: ["v*"]
+    paths: ["android/**", "android-sources.tar.gz.b64", ".github/workflows/android.yml", "**"]
   workflow_dispatch:
 
 permissions:
