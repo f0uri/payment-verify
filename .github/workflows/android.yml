@@ -1,0 +1,57 @@
+name: Build Android APK
+
+# يبني تطبيق payment-verify.apk ويرفعه كـ Artifact (وعلى GitHub Release عند وضع tag v...)
+on:
+  push:
+    branches: ["**"]
+    paths: ["android/**", "android-sources.tar.gz.b64", ".github/workflows/android.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: تحميل المستودع
+        uses: actions/checkout@v4
+
+      - name: تثبيت Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # إن كان المستودع يحتوي فقط على ملف البذرة (رفع من الهاتف) نستخرج مصادر android منها
+      - name: استخراج المصادر (إن لزم)
+        run: |
+          if [ ! -d android/app ]; then
+            if [ -f android-sources.tar.gz.b64 ]; then
+              base64 -d android-sources.tar.gz.b64 | tar -xzf -
+              echo "✅ تم استخراج مصادر android من ملف البذرة"
+            else
+              echo "::error::لا يوجد مجلد android ولا ملف android-sources.tar.gz.b64"
+              exit 1
+            fi
+          else
+            echo "✅ مصادر android موجودة في المستودع"
+          fi
+
+      - name: بناء APK
+        run: bash android/scripts/build-apk.sh
+
+      - name: رفع الـ APK كـ Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: payment-verify-apk
+          path: android/payment-verify.apk
+
+      # اختياري: عند وضع tag مثل v1.0 يُنشأ Release ويُرفق فيه الـ APK
+      - name: إنشاء Release وإرفاق APK (عند tag v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes || true
+          gh release upload "$GITHUB_REF_NAME" android/payment-verify.apk --clobber

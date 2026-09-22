@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    android:overScrollMode="never">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="22dp"
+        android:paddingEnd="22dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="40dp"
+        android:layoutDirection="rtl"
+        android:textDirection="rtl">
+
+        <!-- ═══ الترويسة ═══ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:background="@drawable/bg_glass"
+                android:gravity="center"
+                android:text="🛡"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="14dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="لوحة الأدمن"
+                    android:textColor="#F5F5F7"
+                    android:textSize="25sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:id="@+id/tvMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textColor="#9A9AA5"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- الدخول (وضع الخادم فقط) -->
+        <LinearLayout
+            android:id="@+id/loginBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_glass"
+            android:padding="18dp"
+            android:visibility="gone">
+
+            <TextView style="@style/Label" android:layout_marginTop="0dp" android:text="مفتاح الأدمن (ADMIN_KEY)" />
+            <EditText android:id="@+id/etKey" style="@style/Input" android:inputType="textPassword" android:hint="admin1234" />
+            <Button android:id="@+id/btnLogin"
+                android:layout_width="match_parent" android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_btn_primary"
+                android:text="دخول" android:textColor="#FFFFFF" android:textSize="15sp" android:textStyle="bold"
+                android:stateListAnimator="@null" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- إحصائيات -->
+            <TextView
+                android:id="@+id/tvStats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_glass"
+                android:padding="18dp"
+                android:textColor="#D8D8DE"
+                android:textSize="13sp"
+                android:lineSpacingMultiplier="1.5" />
+
+            <!-- الإعدادات -->
+            <TextView style="@style/Label" android:layout_marginTop="24dp" android:text="⚙️ إعدادات المحاولات والحظر" android:textColor="#9A9AA5" android:textSize="14sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_glass"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="8dp">
+                        <TextView style="@style/Label" android:layout_marginTop="0dp" android:text="المحاولات المسموح بها" />
+                        <EditText android:id="@+id/etMax" style="@style/Input" android:inputType="number" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                        <TextView style="@style/Label" android:layout_marginTop="0dp" android:text="مدة الحظر (دقائق)" />
+                        <EditText android:id="@+id/etBlock" style="@style/Input" android:inputType="number" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="8dp">
+                        <TextView style="@style/Label" android:text="أقل مبلغ (MAD)" />
+                        <EditText android:id="@+id/etMin" style="@style/Input" android:inputType="numberDecimal" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                        <TextView style="@style/Label" android:text="أعلى مبلغ (MAD)" />
+                        <EditText android:id="@+id/etMaxAmt" style="@style/Input" android:inputType="numberDecimal" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button android:id="@+id/btnSave"
+                    android:layout_width="match_parent" android:layout_height="52dp"
+                    android:layout_marginTop="18dp"
+                    android:background="@drawable/bg_btn_primary"
+                    android:text="💾 حفظ الإعدادات" android:textColor="#FFFFFF" android:textSize="15sp" android:textStyle="bold"
+                    android:stateListAnimator="@null" />
+            </LinearLayout>
+
+            <!-- حظر يدوي -->
+            <TextView style="@style/Label" android:layout_marginTop="24dp" android:text="🚫 حظر يدوي" android:textColor="#9A9AA5" android:textSize="14sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_glass"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <EditText android:id="@+id/etBlockKey" style="@style/Input" android:inputType="text" android:hint="user_42 أو IP" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="12dp">
+                    <Button android:id="@+id/btnBlock"
+                        android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1" android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_btn_danger"
+                        android:text="حظر" android:textColor="#FFFFFF" android:textAllCaps="false"
+                        android:stateListAnimator="@null" />
+                    <Button android:id="@+id/btnResetAll"
+                        android:layout_width="0dp" android:layout_height="46dp" android:layout_weight="1"
+                        android:background="@drawable/bg_btn_secondary"
+                        android:text="تصفير الكل" android:textColor="#FFFFFF" android:textAllCaps="false" android:textSize="13sp"
+                        android:stateListAnimator="@null" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- فحص ملف بطاقات -->
+            <TextView style="@style/Label" android:layout_marginTop="24dp" android:text="📄 فحص ملف بطاقات" android:textColor="#9A9AA5" android:textSize="14sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_glass"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#9A9AA5"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="ملف CSV/TXT — كل سطر: الرقم، الشهر، السنة، CVV، الاسم (اختياري). الفحص حجز تجريبي ثم إلغاء فوري بدون أي خصم." />
+                <Button android:id="@+id/btnUpload"
+                    android:layout_width="match_parent" android:layout_height="48dp"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg_btn_secondary"
+                    android:text="⬆️ اختيار ملف وفحص" android:textColor="#FFFFFF" android:textAllCaps="false" android:textSize="14sp"
+                    android:stateListAnimator="@null" />
+                <TextView
+                    android:id="@+id/tvCardResults"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg_card"
+                    android:padding="14dp"
+                    android:textColor="#D8D8DE"
+                    android:textSize="13sp"
+                    android:lineSpacingMultiplier="1.5"
+                    android:fontFamily="monospace"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- قائمة المحاولات -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="24dp" android:gravity="center_vertical">
+                <TextView style="@style/Label" android:layout_width="0dp" android:layout_weight="1" android:layout_marginTop="0dp" android:layout_marginBottom="0dp" android:text="👥 المحاولات الفاشلة / المحظورون" android:textColor="#9A9AA5" android:textSize="14sp" />
+                <Button android:id="@+id/btnRefresh"
+                    android:layout_width="40dp" android:layout_height="40dp"
+                    android:background="@drawable/bg_chip"
+                    android:text="🔄" android:textColor="#C7C7CC" android:textAllCaps="false"
+                    android:stateListAnimator="@null" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/attemptsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/tvMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="16dp"
+                android:textSize="14sp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

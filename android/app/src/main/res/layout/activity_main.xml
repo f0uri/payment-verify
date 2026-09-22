@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    android:overScrollMode="never">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="22dp"
+        android:paddingEnd="22dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="40dp"
+        android:layoutDirection="rtl"
+        android:textDirection="rtl">
+
+        <!-- ═══ الترويسة ═══ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:background="@drawable/bg_glass"
+                android:gravity="center"
+                android:text="💳"
+                android:textSize="26sp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="14dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="شحن الرصيد"
+                    android:textColor="#F5F5F7"
+                    android:textSize="25sp"
+                    android:fontFamily="sans-serif-medium" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="تحقق آمن من البطاقة والرصيد"
+                    android:textColor="#9A9AA5"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:background="@drawable/bg_chip"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="🛡 الأدمن"
+                android:textAllCaps="false"
+                android:textColor="#C7C7CC"
+                android:textSize="13sp"
+                android:stateListAnimator="@null" />
+        </LinearLayout>
+
+        <!-- حبة الحالة -->
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_status_pill"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="#C7C7CC"
+            android:textSize="12sp" />
+
+        <!-- ═══ بطاقة الوضع ═══ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_glass"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="الوضع التجريبي"
+                        android:textColor="#F5F5F7"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="بنك محاكى داخل الهاتف — بدون خادم"
+                        android:textColor="#9A9AA5"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <Switch
+                    android:id="@+id/swOffline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:thumbTint="#FFFFFF"
+                    android:trackTint="#30D158" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/serverBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView style="@style/Label" android:text="عنوان الخادم (Backend URL)" />
+                <EditText
+                    android:id="@+id/etServer"
+                    style="@style/Input"
+                    android:inputType="textUri"
+                    android:hint="https://your-server.com" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ═══ المراحل ═══ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_glass"
+            android:orientation="horizontal"
+            android:padding="14dp">
+            <TextView android:id="@+id/tvStep1" style="@style/Step" android:text="١ · تحقق شكلي" />
+            <TextView android:id="@+id/tvStep2" style="@style/Step" android:text="٢ · حجز بنكي" />
+            <TextView android:id="@+id/tvStep3" style="@style/Step" android:text="٣ · سحب" />
+        </LinearLayout>
+
+        <!-- ═══ بطاقة المبلغ ═══ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_glass"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <TextView style="@style/Label" android:layout_marginTop="0dp" android:text="المبلغ المراد شحنه (MAD)" />
+
+            <EditText
+                android:id="@+id/etAmount"
+                style="@style/Input"
+                android:layout_height="58dp"
+                android:inputType="numberDecimal"
+                android:text="100"
+                android:textSize="28sp"
+                android:fontFamily="sans-serif-medium" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+                <Button android:id="@+id/btnChip50" style="@style/Chip" android:layout_marginStart="0dp" android:text="50" />
+                <Button android:id="@+id/btnChip100" style="@style/Chip" android:layout_marginStart="8dp" android:text="100" />
+                <Button android:id="@+id/btnChip200" style="@style/Chip" android:layout_marginStart="8dp" android:text="200" />
+                <Button android:id="@+id/btnChip500" style="@style/Chip" android:layout_marginStart="8dp" android:text="500" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ═══ بطاقة البطاقة ═══ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_glass"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <TextView style="@style/Label" android:layout_marginTop="0dp" android:text="اسم حامل البطاقة" />
+            <EditText android:id="@+id/etHolder" style="@style/Input" android:inputType="textCapCharacters" android:hint="MOHAMED ALAOUI" />
+
+            <TextView style="@style/Label" android:text="رقم البطاقة" />
+            <EditText android:id="@+id/etNumber" style="@style/Input" android:inputType="number" android:hint="4242 4242 4242 4242" android:maxLength="23" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="6dp">
+                    <TextView style="@style/Label" android:text="الشهر" />
+                    <EditText android:id="@+id/etMonth" style="@style/Input" android:inputType="number" android:hint="12" android:maxLength="2" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="6dp">
+                    <TextView style="@style/Label" android:text="السنة" />
+                    <EditText android:id="@+id/etYear" style="@style/Input" android:inputType="number" android:hint="29" android:maxLength="4" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                    <TextView style="@style/Label" android:text="CVV" />
+                    <EditText android:id="@+id/etCvv" style="@style/Input" android:inputType="numberPassword" android:hint="123" android:maxLength="4" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- ═══ زر التحقق ═══ -->
+        <Button
+            android:id="@+id/btnVerify"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_btn_primary"
+            android:text="تحقّق من البطاقة واحجز المبلغ"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:stateListAnimator="@null" />
+
+        <TextView
+            android:id="@+id/tvResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="16dp"
+            android:textSize="14sp"
+            android:lineSpacingMultiplier="1.35"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/postActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+            <Button android:id="@+id/btnCapture" android:layout_width="0dp" android:layout_height="50dp" android:layout_weight="1" android:layout_marginEnd="8dp" android:background="@drawable/bg_btn_green" android:text="✅ تم الشحن — اسحب" android:textColor="#FFFFFF" android:textAllCaps="false" android:stateListAnimator="@null" />
+            <Button android:id="@+id/btnCancel" android:layout_width="0dp" android:layout_height="50dp" android:layout_weight="1" android:background="@drawable/bg_btn_danger" android:text="إلغاء الحجز" android:textColor="#FFFFFF" android:textAllCaps="false" android:stateListAnimator="@null" />
+        </LinearLayout>
+
+        <!-- ═══ بطاقات تجريبية ═══ -->
+        <TextView style="@style/Label" android:layout_marginTop="26dp" android:text="بطاقات تجريبية — للمس تلقائية" android:textSize="14sp" android:textColor="#9A9AA5" />
+        <Button android:id="@+id/btnTestOk" style="@style/TestBtn" android:text="4242 4242 4242 4242 · سليمة (رصيد 1000)" />
+        <Button android:id="@+id/btnTestNoFunds" style="@style/TestBtn" android:text="4000 0000 0000 9995 · رصيد غير كافٍ" />
+        <Button android:id="@+id/btnTestFake" style="@style/TestBtn" android:text="4111 1111 1111 1111 · تمر بـ Luhn وغير معروفة" />
+        <Button android:id="@+id/btnTestBad" style="@style/TestBtn" android:text="1234 5678 9012 3456 · رقم عشوائي" />
+    </LinearLayout>
+</ScrollView>

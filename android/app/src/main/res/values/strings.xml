@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Payment Verify</string>
+    <!-- 10.0.2.2 = localhost الخاص بالحاسوب من داخل محاكي Android. على هاتف حقيقي ضع IP حاسوبك أو رابط الخادم -->
+    <string name="default_server">http://10.0.2.2:3000</string>
+</resources>

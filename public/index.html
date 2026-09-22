@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التحقق من بطاقة الدفع قبل الشحن</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Tahoma, Arial, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 24px; }
+  .wrap { max-width: 1100px; margin: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 800px) { .wrap { grid-template-columns: 1fr; } }
+  .card { background: #1e293b; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,.3); }
+  h1 { grid-column: 1 / -1; margin: 0 0 8px; font-size: 26px; }
+  h2 { margin: 0 0 16px; font-size: 18px; color: #93c5fd; }
+  label { display: block; font-size: 13px; color: #94a3b8; margin: 12px 0 6px; }
+  input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 16px; direction: ltr; text-align: left; }
+  input:focus { outline: none; border-color: #3b82f6; }
+  .row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  button { width: 100%; margin-top: 18px; padding: 14px; border: 0; border-radius: 10px; font-size: 16px; cursor: pointer; font-weight: bold; color: #fff; background: linear-gradient(135deg,#2563eb,#7c3aed); }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  button.secondary { background: #334155; }
+  button.danger { background: #b91c1c; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; background: #334155; margin-inline-start: 8px; }
+  .result { margin-top: 18px; padding: 16px; border-radius: 12px; display: none; white-space: pre-wrap; line-height: 1.7; }
+  .ok { background: #052e16; border: 1px solid #16a34a; color: #bbf7d0; }
+  .fail { background: #450a0a; border: 1px solid #dc2626; color: #fecaca; }
+  .steps { display: flex; gap: 8px; margin-bottom: 16px; }
+  .step { flex: 1; text-align: center; padding: 10px; border-radius: 10px; background: #0f172a; font-size: 13px; border: 1px solid #334155; }
+  .step.active { border-color: #3b82f6; color: #93c5fd; }
+  .step.done { border-color: #16a34a; color: #86efac; }
+  .step.err { border-color: #dc2626; color: #fca5a5; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px; border-bottom: 1px solid #334155; text-align: right; }
+  td.num { direction: ltr; text-align: right; font-family: monospace; cursor: pointer; color: #93c5fd; }
+  .actions { display: flex; gap: 10px; }
+  .muted { color: #94a3b8; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>💳 التحقق من بطاقة الدفع قبل الشحن <span class="badge" id="gw">...</span> <a href="/admin.html" style="font-size:13px;color:#93c5fd;margin-inline-start:12px">🛡️ لوحة الأدمن</a></h1>
+
+  <div class="card">
+    <h2>١. أدخل بيانات البطاقة والمبلغ</h2>
+    <div class="steps">
+      <div class="step" id="s1">التحقق الشكلي (Luhn)</div>
+      <div class="step" id="s2">حجز المبلغ لدى البنك</div>
+      <div class="step" id="s3">السحب بعد الشحن</div>
+    </div>
+    <form id="form">
+      <label>المبلغ المراد شحنه (MAD)</label>
+      <input id="amount" type="number" value="100" min="5" step="1">
+      <label>اسم حامل البطاقة</label>
+      <input id="holder" placeholder="MOHAMED ALAOUI">
+      <label>رقم البطاقة</label>
+      <input id="number" placeholder="4242 4242 4242 4242" maxlength="23" autocomplete="cc-number">
+      <div class="row">
+        <div><label>الشهر</label><input id="mm" placeholder="12" maxlength="2"></div>
+        <div><label>السنة</label><input id="yy" placeholder="28" maxlength="4"></div>
+        <div><label>CVV</label><input id="cvv" placeholder="123" maxlength="4"></div>
+      </div>
+      <button type="submit" id="btn">تحقق من البطاقة واحجز المبلغ</button>
+    </form>
+    <div id="result" class="result"></div>
+    <div id="post" class="actions" style="display:none">
+      <button class="secondary" id="capture">✅ تم الشحن — اسحب المبلغ</button>
+      <button class="danger" id="cancel">✖ إلغاء الحجز</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>بطاقات تجريبية (اضغط على الرقم لتعبئته)</h2>
+    <p class="muted">في وضع الاختبار الخادم يحاكي البنك. أي رقم آخر — حتى لو كان صحيحاً حسابياً — سيُرفض كبطاقة غير موجودة.</p>
+    <table id="cards"><thead><tr><th>الرقم</th><th>النوع</th><th>النتيجة المتوقعة</th></tr></thead><tbody></tbody></table>
+
+    <h2 style="margin-top:24px">سجل العمليات</h2>
+    <table id="log"><thead><tr><th>#</th><th>المرحلة</th><th>الحالة</th><th>المبلغ</th><th>التفاصيل</th></tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let currentAuth = null;
+
+const DECLINE_AR = { insufficient_funds:'رصيد غير كافٍ', generic_decline:'رفض من البنك', expired_card:'منتهية الصلاحية', incorrect_cvc:'CVV خاطئ', fraudulent:'مشتبه بها' };
+
+async function loadConfig() {
+  const c = await (await fetch('/api/config')).json();
+  $('gw').textContent = 'وضع: ' + (c.gateway === 'mock' ? 'اختبار (محاكاة البنك)' : c.gateway);
+  const tb = $('cards').querySelector('tbody');
+  tb.innerHTML = c.testCards.map(t => `<tr><td class="num" onclick="fill('${t.number}')">${t.number}</td><td>${t.brand}</td><td>${t.decline ? '❌ ' + (DECLINE_AR[t.decline]||t.decline) : '✅ سليمة، رصيد ' + t.balance + ' MAD'}</td></tr>`).join('');
+}
+function fill(n) { $('number').value = n; $('mm').value = '12'; $('yy').value = '29'; $('cvv').value = '123'; if (!$('holder').value) $('holder').value = 'TEST USER'; }
+
+$('number').addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g,'').slice(0,19).replace(/(\d{4})(?=\d)/g,'$1 '); });
+
+function setSteps(state) { ['s1','s2','s3'].forEach((id,i) => { $(id).className = 'step ' + (state[i]||''); }); }
+function show(ok, text) { const r = $('result'); r.style.display='block'; r.className = 'result ' + (ok?'ok':'fail'); r.textContent = text; }
+
+$('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  $('btn').disabled = true; $('post').style.display='none'; currentAuth = null;
+  setSteps(['active','','']);
+  const body = {
+    amount: Number($('amount').value),
+    card: { number: $('number').value, expMonth: $('mm').value, expYear: $('yy').value, cvv: $('cvv').value, holderName: $('holder').value }
+  };
+  try {
+    setTimeout(() => { if ($('s1').className.includes('active')) setSteps(['done','active','']); }, 150);
+    const res = await fetch('/api/payments/verify', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+    const d = await res.json();
+    if (d.ok) {
+      setSteps(['done','done','active']);
+      currentAuth = d.authorizationId;
+      show(true, `✅ ${d.message}\nالبطاقة: ${d.card.brand.toUpperCase()} •••• ${d.card.last4}\nالمبلغ المحجوز: ${d.amount} ${d.currency}\nرقم الحجز: ${d.authorizationId}` + (d.remainingBalance!=null ? `\n(ديمو) الرصيد المتبقي في البطاقة: ${d.remainingBalance} MAD` : ''));
+      $('post').style.display='flex';
+    } else {
+      if (d.stage === 'validation') setSteps(['err','','']);
+      else if (d.stage === 'bank') setSteps(['done','err','']);
+      else setSteps(['err','','']);
+      show(false, `❌ ${d.message}` + (d.errors ? '\n• ' + d.errors.join('\n• ') : '') + (d.code ? `\nرمز الخطأ: ${d.code}` : ''));
+    }
+  } catch (err) { show(false, 'تعذر الاتصال بالخادم'); }
+  $('btn').disabled = false; loadLog();
+});
+
+$('capture').addEventListener('click', async () => {
+  const d = await (await fetch('/api/payments/capture', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ authorizationId: currentAuth }) })).json();
+  show(d.ok, (d.ok?'✅ ':'❌ ') + d.message + (d.ok ? `\nالمبلغ المسحوب: ${d.amount} ${d.currency}` : ''));
+  if (d.ok) { setSteps(['done','done','done']); $('post').style.display='none'; }
+  loadLog();
+});
+$('cancel').addEventListener('click', async () => {
+  const d = await (await fetch('/api/payments/cancel', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ authorizationId: currentAuth }) })).json();
+  show(d.ok, (d.ok?'↩ ':'❌ ') + d.message);
+  if (d.ok) { setSteps(['done','done','']); $('post').style.display='none'; }
+  loadLog();
+});
+
+async function loadLog() {
+  const list = await (await fetch('/api/payments')).json();
+  const tb = $('log').querySelector('tbody');
+  tb.innerHTML = list.slice(0,15).map(t => `<tr><td>${t.id}</td><td>${t.stage}</td><td>${t.ok?'✅':'❌'} ${t.status||t.code||''}</td><td>${t.amount??''}</td><td class="muted">${t.errors ? t.errors.join('، ') : (t.card ? '•••• '+t.card.last4 : (t.last4 ? '•••• '+t.last4 : ''))}</td></tr>`).join('') || '<tr><td colspan="5" class="muted">لا توجد عمليات بعد</td></tr>';
+}
+loadConfig(); loadLog();
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_app</item>
+        <item name="android:statusBarColor">#08081A</item>
+        <item name="android:navigationBarColor">#08081A</item>
+        <item name="android:colorAccent">#0A84FF</item>
+        <item name="android:colorControlActivated">#0A84FF</item>
+        <item name="android:colorControlNormal">#66FFFFFF</item>
+    </style>
+
+    <!-- عنوان قسم صغير -->
+    <style name="Label">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
+        <item name="android:textColor">#9A9AA5</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+
+    <!-- حقل زجاجي -->
+    <style name="Input">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:textColor">#F5F5F7</item>
+        <item name="android:textColorHint">#5E5E6A</item>
+        <item name="android:textDirection">ltr</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- مراحل العملية -->
+    <style name="Step">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#9A9AA5</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
+
+    <!-- زر بطاقة تجريبية -->
+    <style name="TestBtn">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">46dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:background">@drawable/bg_chip</item>
+        <item name="android:textColor">#C7C7CC</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <!-- شريحة مبلغ سريعة -->
+    <style name="Chip">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">38dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/bg_chip</item>
+        <item name="android:textColor">#C7C7CC</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+</resources>
